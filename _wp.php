@@ -18,7 +18,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		$_SERVER['HTTP_HOST'] = $components['host'] . ':' . $components['port'];
 	}
 	if ( empty( $_SERVER['SERVER_NAME'] ) ) {
-		$_SERVER['SERVER_NAME'] = $components['SERVER_NAME'];
+		$_SERVER['SERVER_NAME'] = $components['host'];
 	}
 }
 
