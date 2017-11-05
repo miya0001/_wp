@@ -29,7 +29,7 @@ if ( '127.0.0.1' === $_SERVER['REMOTE_ADDR'] && ! empty( $_SERVER['HTTP_REMOTE_A
 
 // Hiding the update notification.
 add_action( 'admin_head', function() {
-	if (!current_user_can('update_core')) {
+	if ( ! current_user_can( 'update_core' ) ) {
 		remove_action( 'admin_notices', 'update_nag', 3 );
 	}
 } );
