@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     _wp
- * Plugin URI:      PLUGIN SITE HERE
+ * Plugin URI:      https://github.com/miya0001/_wp
  * Description:     Fixes the some problems with our environment.
  * Author:          Takayuki Miyauchi
  * Author URI:      https://miya.io/
@@ -22,7 +22,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	}
 }
 
-// Get the correct IP address via reverse proxy.
+// Gets the correct IP address from reverse proxy.
 if ( '127.0.0.1' === $_SERVER['REMOTE_ADDR'] && ! empty( $_SERVER['HTTP_REMOTE_ADDR'] ) ) {
 	$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_REMOTE_ADDR'];
 }
