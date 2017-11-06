@@ -15,7 +15,11 @@
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	$components = parse_url( home_url() );
 	if ( empty( $_SERVER['HTTP_HOST'] ) ) {
-		$_SERVER['HTTP_HOST'] = $components['host'] . ':' . $components['port'];
+		if ( empty( $components['port'] ) ) {
+			$_SERVER['HTTP_HOST'] = $components['host'];
+		} else {
+			$_SERVER['HTTP_HOST'] = $components['host'] . ':' . $components['port'];
+		}
 	}
 	if ( empty( $_SERVER['SERVER_NAME'] ) ) {
 		$_SERVER['SERVER_NAME'] = $components['host'];
