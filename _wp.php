@@ -13,16 +13,17 @@
 
 // Fixes the warning for the WP-CLI
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	$components = parse_url( home_url() );
+	$host = parse_url( home_url(), PHP_URL_HOST );
+	$port = parse_url( home_url(), PHP_URL_PORT );
 	if ( empty( $_SERVER['HTTP_HOST'] ) ) {
-		if ( empty( $components['port'] ) ) {
-			$_SERVER['HTTP_HOST'] = $components['host'];
+		if ( ! $port || 80 === $port ) {
+			$_SERVER['HTTP_HOST'] = $host;
 		} else {
-			$_SERVER['HTTP_HOST'] = $components['host'] . ':' . $components['port'];
+			$_SERVER['HTTP_HOST'] = $host . ':' . $port;
 		}
 	}
 	if ( empty( $_SERVER['SERVER_NAME'] ) ) {
-		$_SERVER['SERVER_NAME'] = $components['host'];
+		$_SERVER['SERVER_NAME'] = $host;
 	}
 }
 
