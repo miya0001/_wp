@@ -45,3 +45,12 @@ add_filter( 'talog_active_levels', function( $active_levels ) {
 	return $active_levels;
 } );
 
+add_action( 'wp_enqueue_scripts', function() {
+	wp_register_script(
+		'jquery',
+		plugins_url( 'js/jquery/dist/jquery.min.js' ),
+		array(),
+		'3.2.1',
+		true
+	);
+} );
