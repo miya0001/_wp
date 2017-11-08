@@ -46,9 +46,10 @@ add_filter( 'talog_active_levels', function( $active_levels ) {
 } );
 
 add_action( 'wp_enqueue_scripts', function() {
+	wp_deregister_script( 'jquery' );
 	wp_register_script(
 		'jquery',
-		plugins_url( 'js/jquery/dist/jquery.min.js' ),
+		plugins_url( 'js/jquery/dist/jquery.min.js', __FILE__ ),
 		array(),
 		'3.2.1',
 		true
