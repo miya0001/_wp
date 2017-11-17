@@ -38,7 +38,7 @@ add_action( 'admin_head', function() {
 } );
 
 // For talog plugin.
-add_filter( 'talog_active_levels', function( $active_levels ) {
+add_filter( 'logbook_active_levels', function( $active_levels ) {
 	$active_levels[] = 'debug';
 	$active_levels[] = 'trace';
 
