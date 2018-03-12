@@ -37,7 +37,7 @@ add_action( 'admin_head', function() {
 	remove_action( 'admin_notices', 'update_nag', 3 );
 } );
 
-// For talog plugin.
+// For logbook plugin.
 add_filter( 'logbook_active_levels', function( $active_levels ) {
 	$active_levels[] = 'debug';
 	$active_levels[] = 'trace';
