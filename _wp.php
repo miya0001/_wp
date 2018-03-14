@@ -45,13 +45,3 @@ add_filter( 'logbook_active_levels', function( $active_levels ) {
 	return $active_levels;
 } );
 
-add_action( 'wp_enqueue_scripts', function() {
-	wp_deregister_script( 'jquery' );
-	wp_register_script(
-		'jquery',
-		plugins_url( 'js/jquery/dist/jquery.min.js', __FILE__ ),
-		array(),
-		'3.2.1',
-		true
-	);
-} );
