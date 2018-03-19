@@ -47,7 +47,7 @@ add_filter( 'logbook_active_levels', function( $active_levels ) {
 
 add_filter( 'jpeg_quality', function( $quality, $context ) {
 	if ( 'image_resize' === $context ) {
-		return 60;
+		return 70;
 	} else {
 		return $quality;
 	}
