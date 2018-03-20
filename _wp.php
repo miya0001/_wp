@@ -80,9 +80,15 @@ add_filter( 'wp_image_editors', function( $editors ) {
 
 
 function jpegoptim( $path, $quality = 60 ) {
-	$cmd = '/usr/bin/jpegoptim -m%d --strip-all %s 2>&1';
-	$result = exec( sprintf( $cmd, $quality, escapeshellarg( $path ) ), $output, $status );
-	if ( $status ) {
-		trigger_error( $result );
+	if ( ! is_executable( '/usr/bin/jpegoptim' ) ) {
+		trigger_error( '`/usr/bin/jpegoptim` is not executable, please install it.' );
+		return;
+	}
+	if ( is_file( $path ) ) {
+		$cmd    = '/usr/bin/jpegoptim -m%d --strip-all %s 2>&1';
+		$result = exec( sprintf( $cmd, intval( $quality ), escapeshellarg( $path ) ), $output, $status );
+		if ( $status ) {
+			trigger_error( $result );
+		}
 	}
 }
