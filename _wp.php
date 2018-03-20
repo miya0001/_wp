@@ -45,10 +45,44 @@ add_filter( 'logbook_active_levels', function( $active_levels ) {
 	return $active_levels;
 } );
 
-add_filter( 'jpeg_quality', function( $quality, $context ) {
-	if ( 'image_resize' === $context ) {
-		return 70;
-	} else {
-		return $quality;
+add_filter( 'wp_image_editors', function( $editors ) {
+	if ( ! class_exists( '_WP_Image_Editor_GD' ) ) {
+		class _WP_Image_Editor_GD extends WP_Image_Editor_GD {
+			protected function _save( $image, $filename = null, $mime_type = null ) {
+				$saved = parent::_save( $image, $filename, $mime_type );
+				if ( ! empty( $saved["mime-type"] ) && 'image/jpeg' == $saved["mime-type"] ) {
+					jpegoptim( $saved['path'] );
+				}
+
+				return $saved;
+			}
+		};
 	}
-}, 10, 2 );
+
+	if ( ! class_exists( '_WP_Image_Editor_Imagick' ) ) {
+		class _WP_Image_Editor_Imagick extends WP_Image_Editor_Imagick {
+			protected function _save( $image, $filename = null, $mime_type = null ) {
+				$saved = parent::_save( $image, $filename, $mime_type );
+				if ( ! empty( $saved["mime-type"] ) && 'image/jpeg' == $saved["mime-type"] ) {
+					jpegoptim( $saved['path'] );
+				}
+
+				return $saved;
+			}
+		};
+	}
+
+	return array(
+		'_WP_Image_Editor_GD',
+		'_WP_Image_Editor_Imagick',
+	);
+}, 10 );
+
+
+function jpegoptim( $path, $quality = 60 ) {
+	$cmd = '/usr/bin/jpegoptim -m%d --strip-all %s 2>&1';
+	$result = exec( sprintf( $cmd, $quality, escapeshellarg( $path ) ), $output, $status );
+	if ( $status ) {
+		trigger_error( $result );
+	}
+}
