@@ -52,6 +52,8 @@ add_filter( 'wp_image_editors', function( $editors ) {
 				$saved = parent::_save( $image, $filename, $mime_type );
 				if ( ! empty( $saved["mime-type"] ) && 'image/jpeg' == $saved["mime-type"] ) {
 					jpegoptim( $saved['path'] );
+				} elseif ( ! empty( $saved["mime-type"] ) && 'image/png' == $saved["mime-type"] ) {
+					pngquant( $saved['path'] );
 				}
 
 				return $saved;
@@ -65,6 +67,8 @@ add_filter( 'wp_image_editors', function( $editors ) {
 				$saved = parent::_save( $image, $filename, $mime_type );
 				if ( ! empty( $saved["mime-type"] ) && 'image/jpeg' == $saved["mime-type"] ) {
 					jpegoptim( $saved['path'] );
+				} elseif ( ! empty( $saved["mime-type"] ) && 'image/png' == $saved["mime-type"] ) {
+					pngquant( $saved['path'] );
 				}
 
 				return $saved;
@@ -85,7 +89,21 @@ function jpegoptim( $path, $quality = 60 ) {
 		return;
 	}
 	if ( is_file( $path ) ) {
-		$cmd    = '/usr/bin/jpegoptim -m%d --strip-all %s 2>&1';
+		$cmd = '/usr/bin/jpegoptim -m%d --strip-all %s 2>&1';
+		$result = exec( sprintf( $cmd, intval( $quality ), escapeshellarg( $path ) ), $output, $status );
+		if ( $status ) {
+			trigger_error( $result );
+		}
+	}
+}
+
+function pngquant( $path, $quality = 1 ) {
+	if ( ! is_executable( '/usr/bin/pngquant' ) ) {
+		trigger_error( '`/usr/bin/pngquant` is not executable, please install it.' );
+		return;
+	}
+	if ( is_file( $path ) ) {
+		$cmd = '/usr/bin/pngquant --ext .png --force --speed %d %s 2>&1';
 		$result = exec( sprintf( $cmd, intval( $quality ), escapeshellarg( $path ) ), $output, $status );
 		if ( $status ) {
 			trigger_error( $result );
