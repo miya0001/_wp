@@ -44,3 +44,8 @@ add_filter( 'logbook_active_levels', function( $active_levels ) {
 
 	return $active_levels;
 } );
+
+// Hide wargings to update php
+add_action( "wp_dashboard_setup", function() {
+    remove_meta_box('dashboard_php_nag', 'dashboard', 'normal');
+} );
